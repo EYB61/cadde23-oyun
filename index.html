@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Spin Table Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="login">
+    <input id="nameInput" placeholder="Nickname">
+    <button onclick="joinGame()">Join</button>
+  </div>
+
+  <div id="game" style="display:none;">
+    <h2>Room: <span id="roomId">-</span></h2>
+    <h3 id="status">Waiting...</h3>
+
+    <button onclick="takeTurn()">Play Turn</button>
+
+    <div id="players"></div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/socket.js"></script>
+  <script src="js/game.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>
