@@ -8,36 +8,51 @@ const io = new Server(server);
 
 let rooms = {};
 
+function generateRoomCode() {
+  return Math.random().toString(36).substring(2, 6).toUpperCase();
+}
+
 io.on("connection", (socket) => {
 
-  socket.on("joinRoom", ({ name, room }) => {
+  socket.on("createRoom", ({ name }) => {
+    const room = generateRoomCode();
+
+    rooms[room] = {
+      host: socket.id,
+      players: [{ id: socket.id, name }]
+    };
+
     socket.join(room);
 
-    if (!rooms[room]) rooms[room] = [];
-
-    rooms[room].push({ id: socket.id, name });
-
-    io.to(room).emit("updatePlayers", rooms[room]);
-    io.to(room).emit("status", name + " joined");
+    socket.emit("roomJoined", { room });
+    io.to(room).emit("updatePlayers", rooms[room].players);
   });
 
-  socket.on("playTurn", () => {
-    const result = Math.random();
+  socket.on("joinRoom", ({ name, room }) => {
+    if (!rooms[room]) {
+      socket.emit("errorMsg", "Room not found");
+      return;
+    }
 
-    let msg = "";
+    rooms[room].players.push({ id: socket.id, name });
+    socket.join(room);
 
-    if (result < 0.3) msg = "Skip turn!";
-    else if (result < 0.5) msg = "Double points!";
-    else if (result < 0.55) msg = "Eliminated!";
-    else msg = "Safe move";
+    socket.emit("roomJoined", { room });
+    io.to(room).emit("updatePlayers", rooms[room].players);
+  });
 
-    io.emit("status", msg);
+  socket.on("chat", ({ room, msg, name }) => {
+    io.to(room).emit("chat", { name, msg });
+  });
+
+  socket.on("startGame", (room) => {
+    io.to(room).emit("status", "Game Started!");
   });
 
   socket.on("disconnect", () => {
     for (let r in rooms) {
-      rooms[r] = rooms[r].filter(p => p.id !== socket.id);
-      io.to(r).emit("updatePlayers", rooms[r]);
+      rooms[r].players = rooms[r].players.filter(p => p.id !== socket.id);
+      io.to(r).emit("updatePlayers", rooms[r].players);
     }
   });
 
