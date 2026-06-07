@@ -1,38 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Spin Table Pro</title>
+  <title>Spin Risk Table</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div id="menu">
+  <h2>Spin Risk Table</h2>
 
   <input id="name" placeholder="Nickname">
 
   <button onclick="createRoom()">Create Room</button>
 
-  <input id="roomCode" placeholder="Room Code">
+  <input id="roomInput" placeholder="Room Code">
   <button onclick="joinRoom()">Join Room</button>
-
 </div>
 
 <div id="game" style="display:none;">
 
   <h2>Room: <span id="room"></span></h2>
 
-  <button onclick="startGame()">Start Game</button>
+  <h3 id="status">Waiting...</h3>
 
+  <button onclick="startGame()">Start Game</button>
+  <button onclick="playTurn()">Play Turn</button>
+
+  <h3>Players</h3>
   <div id="players"></div>
 
+  <h3>Chat</h3>
   <div id="chat"></div>
-  <input id="msg" placeholder="message">
+  <input id="msg">
   <button onclick="sendMsg()">Send</button>
 
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="js/socket.js"></script>
 <script src="app.js"></script>
 
 </body>
