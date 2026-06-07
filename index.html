@@ -1,29 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Spin Table Game</title>
+  <title>Spin Table Pro</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div id="login">
-    <input id="nameInput" placeholder="Nickname">
-    <button onclick="joinGame()">Join</button>
-  </div>
+<div id="menu">
 
-  <div id="game" style="display:none;">
-    <h2>Room: <span id="roomId">-</span></h2>
-    <h3 id="status">Waiting...</h3>
+  <input id="name" placeholder="Nickname">
 
-    <button onclick="takeTurn()">Play Turn</button>
+  <button onclick="createRoom()">Create Room</button>
 
-    <div id="players"></div>
-  </div>
+  <input id="roomCode" placeholder="Room Code">
+  <button onclick="joinRoom()">Join Room</button>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="js/socket.js"></script>
-  <script src="js/game.js"></script>
-  <script src="app.js"></script>
+</div>
+
+<div id="game" style="display:none;">
+
+  <h2>Room: <span id="room"></span></h2>
+
+  <button onclick="startGame()">Start Game</button>
+
+  <div id="players"></div>
+
+  <div id="chat"></div>
+  <input id="msg" placeholder="message">
+  <button onclick="sendMsg()">Send</button>
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/socket.js"></script>
+<script src="app.js"></script>
 
 </body>
 </html>
